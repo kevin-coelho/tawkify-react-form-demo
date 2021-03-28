@@ -1,0 +1,19 @@
+{
+  "name": "tawkify-react-form-demo",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:kevin-coelho/tawkify-react-form-demo.git"
+  },
+  "author": "Kevin Coelho <kevin@kevincoelho.com>",
+  "license": "ISC",
+  "homepage": "https://github.com/kevin-coelho/tawkify-react-form-demo",
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
+}
