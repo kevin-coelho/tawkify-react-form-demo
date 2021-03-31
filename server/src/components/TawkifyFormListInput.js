@@ -1,9 +1,12 @@
+// deps
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+// styles
 import { makeStyles } from '@material-ui/core/styles';
 
-import TawkifyListInput from './TawkifyListInput';
+// components
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -11,6 +14,9 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 import ClearIcon from '@material-ui/icons/Clear';
+
+// local components
+import TawkifyListInput from './TawkifyListInput';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '& .MuiFormLabel-root': {
       color: '#7876A5',
-    }
+    },
   },
   list: {
     '& .MuiListItemIcon-root': {
@@ -28,11 +34,11 @@ const useStyles = makeStyles((theme) => ({
       'font-size': '2.5rem',
     },
     '.MuiIconButton-edgeEnd': {
-      'font-size': '0.5ch'
+      'font-size': '0.5ch',
     },
-    width: '100%',
+    'width': '100%',
     //maxWidth: 360,
-    backgroundColor: theme.palette.background.paper,
+    'backgroundColor': theme.palette.background.paper,
   },
 }));
 
@@ -68,6 +74,11 @@ export default function TawkifyFormListInput(props) {
   const [input, setInput] = React.useState('');
   const [err, setError] = React.useState(null);
 
+  const setAndUpdate = (newList) => {
+    setList(newList);
+    if (update) update(newList);
+  };
+
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
       if (!input.trim() && required) {
@@ -75,10 +86,8 @@ export default function TawkifyFormListInput(props) {
         return;
       }
       setError(null);
-      const newList = list.concat(input);
-      setList(newList);
       setInput('');
-      if (update) update(newList);
+      setAndUpdate(list.concat(input));
     }
   };
 
@@ -87,10 +96,57 @@ export default function TawkifyFormListInput(props) {
       setError('Editing this list is disabled');
       return;
     }
-    const newList = list.filter((e, i) => i !== idx);
-    setList(newList);
-    if (update) update(newList);
+    setAndUpdate(list.filter((e, i) => i !== idx));
   };
+
+  const handleListReorder = (result) => {
+    if (!result.destination) return;
+    if (disabled) {
+      setError('Reordering this list is disabled');
+      return;
+    }
+    const items = Array.from(list);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setAndUpdate(items);
+  };
+
+  const droppableList = (provided) => (
+    <List
+      className={classes.list}
+      {...provided.droppableProps}
+      ref={provided.innerRef}
+    >
+      {list.map((value, idx) => {
+        return (
+          <Draggable key={value} draggableId={value} index={idx}>
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+              >
+                <ListItem role={undefined} dense>
+                  <ListItemIcon>·</ListItemIcon>
+                  <ListItemText primary={value} />
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      edge="end"
+                      aria-label="remove"
+                      onClick={() => handleListRemove(idx)}
+                    >
+                      <ClearIcon style={{ fontSize: '1ch' }} />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </div>
+            )}
+          </Draggable>
+        );
+      })}
+      {provided.placeholder}
+    </List>
+  );
 
   return (
     <div className={classes.root}>
@@ -106,25 +162,9 @@ export default function TawkifyFormListInput(props) {
         disabled={disabled}
         name={name || null}
       />
-      <List className={classes.list}>
-        {list.map((value, idx) => {
-          return (
-            <ListItem key={idx} role={undefined} dense>
-              <ListItemIcon>·</ListItemIcon>
-              <ListItemText primary={value} />
-              <ListItemSecondaryAction>
-                <IconButton
-                  edge="end"
-                  aria-label="remove"
-                  onClick={() => handleListRemove(idx)}
-                >
-                  <ClearIcon style={{ fontSize: '1ch' }} />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          );
-        })}
-      </List>
+      <DragDropContext onDragEnd={handleListReorder}>
+        <Droppable droppableId={classes.list}>{droppableList}</Droppable>
+      </DragDropContext>
     </div>
   );
 }
