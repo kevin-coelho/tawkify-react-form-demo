@@ -3,9 +3,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-// styles
-import { makeStyles } from '@material-ui/core/styles';
-
 // components
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -18,6 +15,8 @@ import ClearIcon from '@material-ui/icons/Clear';
 // local components
 import TawkifyListInput from './TawkifyListInput';
 
+// styles
+import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -47,7 +46,7 @@ TawkifyFormListInput.propTypes = {
   placeholder: PropTypes.string,
   required: PropTypes.bool,
   disabled: PropTypes.bool,
-  max: PropTypes.number,
+  max: PropTypes.number, // if wanted, could do custom validation here. max should probably be positive or 0 integer
   update: PropTypes.func,
   list: PropTypes.array,
   setList: PropTypes.func,
