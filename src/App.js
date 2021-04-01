@@ -62,12 +62,13 @@ export default function App() {
                 <form>
                   <div>
                     <TawkifyFormListInput
-                      label={'Regular list (uncontrolled)'}
+                      label={'Regular list (uncontrolled,  max 3)'}
                       placeholder={'A placeholder value'}
                       update={(list) => {
                         setLists({ ...lists, list1: list });
                         console.log('list 1 updated', list);
                       }}
+                      max={3}
                     />
                   </div>
                   <div>

@@ -65,6 +65,7 @@ export default function TawkifyFormListInput(props) {
     list: _list,
     setList: _setList,
     name,
+    max,
   } = props;
   const [list, setList] = (() => {
     if (_list && _setList) return [_list, _setList];
@@ -83,6 +84,10 @@ export default function TawkifyFormListInput(props) {
     if (event.key === 'Enter') {
       if (!input.trim() && required) {
         setError('Input cannot be empty');
+        return;
+      }
+      if (list.length >= max) {
+        setError(`List has a max length of ${max}`);
         return;
       }
       setError(null);
