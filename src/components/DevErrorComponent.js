@@ -6,7 +6,6 @@ DevErrorComponent.propTypes = {
 };
 
 export default function DevErrorComponent(props) {
-  if (process.env.NODE_ENV === 'development' && props.errState)
-    throw new Error('I am a development rendering error!');
+  if (props.errState) throw new Error('I am a development rendering error!');
   return <div></div>;
 }
