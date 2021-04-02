@@ -34,10 +34,21 @@ the user input portion of the overall component.
 - if the `required` prop is provided, empty strings will not be accepted.
 
 ### Lingering Questions
-- Since the form submission and form state is largely left up to the client, extra validation for the `required` prop 
-may be required. As is implemented now, `TawkifyFormListInput` does not throw errors if the list has no entries, even
-  if `required` is true. This is intentional and mainly relates to `separation of concerns`. Ultimately, `TawkifyFormListInput`
-  should not be responsible for final validation of form submission / form data
+- Since the form submission and form state is largely left up to the client, validation for the `required` prop is
+  somewhat limited in this implementation. As is implemented now, `TawkifyFormListInput` does not throw errors if the 
+  list has no entries, even if `required` is true. This is intentional and mainly relates to `separation of concerns`. 
+  Ultimately, `TawkifyFormListInput` should not be responsible for final validation of form submission / form data, so
+  this is left up to the client.
+  
+### Setup
+- `git clone https://github.com/kevin-coelho/tawkify-react-form-demo.git`
+- `cd tawkify-react-form-demo`
+- `npm install` or `pnpm install`
+- Make a production build: `npm run build` or `pnpm run build`
+
+### Run the app
+- **Front end** `npm run dev` or `pnpm run dev`
+- **Back end** (required for Submit button to work) `npm start` or `pnpm start`
 
 ### Sample App
 - building and starting this repo will load a sample app in which a few examples of using this form are provided

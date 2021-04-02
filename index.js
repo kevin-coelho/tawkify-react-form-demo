@@ -10,7 +10,7 @@ const { extractCelebrateResponseError } = require('./util/error.v8.util');
 const config = require('./config');
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
