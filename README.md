@@ -40,6 +40,10 @@ the user input portion of the overall component.
   Ultimately, `TawkifyFormListInput` should not be responsible for final validation of form submission / form data, so
   this is left up to the client.
   
+### Issues
+- During the "drag and drop" operation on Safari mobile, there is a minor spacing issue  for the 
+  `Regular list (controlled)` 
+  
 ### Setup
 - `git clone https://github.com/kevin-coelho/tawkify-react-form-demo.git`
 - `cd tawkify-react-form-demo`
